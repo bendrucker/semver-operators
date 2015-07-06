@@ -16,8 +16,14 @@ $ npm install --save semver-operators
 ```js
 var semverOperators = require('semver-operators')
 
-semverOperators('exposify', {version: '0.4.3'}, callback);
+semverOperators('exposify', {version: '0.4.3'}, callback)
 //=> callback(null, '~': ['globo', 'has-require', ...], '^': [], '': []})
+
+semverOperators('.', callback)
+//=> get operators for current package
+
+semverOperators('./node_modules/exposify', callback)
+//=> get operators for a package you installed locally
 ```
 
 ##### CLI
@@ -35,26 +41,23 @@ $ semver-operators exposify --version=0.4.3
 *Required*  
 Type: `string`
 
-The name of the package.
+The name of the package (npm is queried) or the path to the package (lookup is performed locally). 
 
 ##### options
-
-Type: `object`  
-Default: `{}`
 
 ###### version
 
 Type: `string`  
-Default: `'latest'`
+Default: `''`
 
-The version to parse.
+The version to parse. If you specify a version alongside a local path and there is a conflict, semver-operators will query npm for the version you requested.
 
 ###### type
 
 Type: `string`  
-Default: `''`
+Default: `'dependencies'`
 
-The type of dependencies (dev or peer), defaulting to regular.
+The type of dependencies (e.g. devDependencies or peerDependencies).
 
 ##### callback
 
@@ -62,7 +65,7 @@ The type of dependencies (dev or peer), defaulting to regular.
 Type: `function`  
 Arguments: `err, operators`
 
-A callback to be called with an operators object with keys representing operators (`''` means an exact version) and values representing the dependencies that have that operator.
+A callback to be called with an operators object with keys (`'~'`, `'^'`, `''`, `'other'`) representing operators and values representing the dependencies that have that operator. See [semver-range-types](https://github.com/bendrucker/semver-range-types) for more details on how ranges are parsed.
 
 ## License
 

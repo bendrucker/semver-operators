@@ -1,6 +1,7 @@
 'use strict'
 
 var test = require('tape')
+var path = require('path')
 var operators = require('./')
 
 test('from npm', function (t) {
@@ -11,22 +12,36 @@ test('from npm', function (t) {
     t.deepEqual(operators, {
       '~': ['globo', 'has-require', 'map-obj', 'replace-requires', 'through2', 'transformify'],
       '^': [],
-      '': []
+      '': [],
+      other: []
     })
   })
 })
 
-test('parser', function (t) {
-  var dependencies = {
-    'foo': '~1.0.0',
-    'bar': '^1.0.0',
-    'baz': '1.0.0',
-    'qux': '>= 1.0.0'
-  }
-  t.deepEqual(operators.parse(dependencies), {
-    '~': ['foo'],
-    '^': ['bar'],
-    '': ['baz']
+test('local', function (t) {
+  t.plan(1)
+  var options = {version: '0.2.0', cwd: path.resolve(__dirname, 'fixtures/local')}
+  operators('.', options, function (err, operators) {
+    if (err) return t.end(err)
+    t.deepEqual(operators, {
+      '~': ['transformify', 'through2', 'detective'],
+      '^': [],
+      '': [],
+      other: []
+    })
   })
-  t.end()
+})
+
+test('local with version mismatch', function (t) {
+  t.plan(1)
+  var options = {version: '0.4.3', cwd: path.resolve(__dirname, 'fixtures/local')}
+  operators('.', options, function (err, operators) {
+    if (err) return t.end(err)
+    t.deepEqual(operators, {
+      '~': ['globo', 'has-require', 'map-obj', 'replace-requires', 'through2', 'transformify'],
+      '^': [],
+      '': [],
+      other: []
+    })
+  })
 })

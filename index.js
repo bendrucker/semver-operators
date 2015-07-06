@@ -1,42 +1,48 @@
 'use strict'
 
+var extend = require('xtend')
+var ap = require('ap')
 var packageJson = require('package-json')
-var exactVersion = require('exact-version')
+var parseDependencies = require('semver-range-types')
+var mothership = require('mothership')
+var path = require('path')
 
-exports = module.exports = function semverOperators (pkgName, options, callback) {
+var applyDefaults = ap.partial(extend, {
+  version: '',
+  type: 'dependencies',
+  cwd: process.cwd()
+})
+
+module.exports = function semverOperators (pkgName, options, callback) {
   if (typeof options === 'function') {
     callback = options
     options = {}
   }
 
-  var version = options.version || 'latest'
-  var type = options.type || ''
+  options = applyDefaults(options)
 
-  packageJson(pkgName, version, function (err, json) {
-    if (err) return callback(err)
-    var dependencies = json[type ? type + 'Dependencies' : 'dependencies'] || {}
-    callback(null, parse(dependencies))
-  })
-}
-
-exports.parse = parse
-function parse (dependencies) {
-  var operators = {
-    '^': [],
-    '~': [],
-    '': []
+  // if our path does not start w/ a dot, assume it's a package name ask npm
+  // for the json
+  if (pkgName.charAt(0) !== '.') {
+    return packageJson(pkgName, options.version || 'latest', parse)
   }
 
-  return Object.keys(dependencies).reduce(function (operators, name) {
-    var semver = dependencies[name]
-    var firstChar = semver.charAt(0)
-
-    if (firstChar in operators) {
-      operators[firstChar].push(name)
-    } else if (exactVersion(semver)) {
-      operators[''].push(name)
+  // otherwise find a local package.json
+  mothership(path.resolve(options.cwd, pkgName), Boolean, function (err, pkg) {
+    if (!err && !pkg) err = new Error('package.json not found')
+    if (err) return callback(err)
+    var json = pkg.pack
+    // if we requested a specific version and the local version doesn't match,
+    // start over and ask npm
+    if (options.version && options.version !== json.version) {
+      return semverOperators(json.name, options, callback)
     }
+    parse(err, json)
+  })
 
-    return operators
-  }, operators)
+  function parse (err, json) {
+    if (err) return callback(err)
+    var dependencies = json[options.type] || {}
+    callback(null, parseDependencies(dependencies))
+  }
 }
