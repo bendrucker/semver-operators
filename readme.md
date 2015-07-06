@@ -12,11 +12,19 @@ $ npm install --save semver-operators
 
 ## Usage
 
+### API
+
 ```js
 var semverOperators = require('semver-operators')
 
 semverOperators('exposify', {version: '0.4.3'}, callback);
 //=> callback(null, '~': ['globo', 'has-require', ...], '^': [], '': []})
+```
+
+### CLI
+
+```sh
+$ semver-operators exposify --version=0.4.3
 ```
 
 ## API
