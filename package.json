@@ -4,7 +4,7 @@
   "bin": {
     "semver-operators": "cli.js"
   },
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Get the semver operators for a package with the corresponding dependencies",
   "license": "MIT",
   "repository": "bendrucker/semver-operators",
