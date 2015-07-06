@@ -9,7 +9,6 @@
 $ npm install --save semver-operators
 ```
 
-
 ## Usage
 
 ##### API
