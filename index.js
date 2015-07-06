@@ -14,7 +14,7 @@ exports = module.exports = function semverOperators (pkgName, options, callback)
 
   packageJson(pkgName, version, function (err, json) {
     if (err) return callback(err)
-    var dependencies = json[type ? type + 'Dependencies' : 'dependencies']
+    var dependencies = json[type ? type + 'Dependencies' : 'dependencies'] || {}
     callback(null, parse(dependencies))
   })
 }
