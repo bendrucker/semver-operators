@@ -9,9 +9,9 @@ test('from npm', function (t) {
   operators('exposify', options, function (err, operators) {
     if (err) return t.end(err)
     t.deepEqual(operators, {
-      '~': 6,
-      '^': 0,
-      '': 0
+      '~': ['globo', 'has-require', 'map-obj', 'replace-requires', 'through2', 'transformify'],
+      '^': [],
+      '': []
     })
   })
 })
@@ -24,9 +24,9 @@ test('parser', function (t) {
     'qux': '>= 1.0.0'
   }
   t.deepEqual(operators.parse(dependencies), {
-    '~': 1,
-    '^': 1,
-    '': 1
+    '~': ['foo'],
+    '^': ['bar'],
+    '': ['baz']
   })
   t.end()
 })

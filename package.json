@@ -2,7 +2,7 @@
   "name": "semver-operators",
   "main": "index.js",
   "version": "0.0.0",
-  "description": "Get the semver operators for a package",
+  "description": "Get the semver operators for a package with the corresponding dependencies",
   "license": "MIT",
   "repository": "bendrucker/semver-operators",
   "author": {
@@ -23,8 +23,11 @@
     "npm"
   ],
   "dependencies": {
-    "exact-version": "^1.0.0",
-    "package-json": "^1.2.0"
+    "chalk": "~1.1.0",
+    "cli-fail": "~1.0.0",
+    "exact-version": "~1.0.0",
+    "meow": "~3.3.0",
+    "package-json": "~1.2.0"
   },
   "devDependencies": {
     "tape": "^4.0.0",

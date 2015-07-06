@@ -9,7 +9,7 @@ exports = module.exports = function semverOperators (pkgName, options, callback)
     options = {}
   }
 
-  var version = options.version || ''
+  var version = options.version || 'latest'
   var type = options.type || ''
 
   packageJson(pkgName, version, function (err, json) {
@@ -22,9 +22,9 @@ exports = module.exports = function semverOperators (pkgName, options, callback)
 exports.parse = parse
 function parse (dependencies) {
   var operators = {
-    '^': 0,
-    '~': 0,
-    '': 0
+    '^': [],
+    '~': [],
+    '': []
   }
 
   return Object.keys(dependencies).reduce(function (operators, name) {
@@ -32,9 +32,9 @@ function parse (dependencies) {
     var firstChar = semver.charAt(0)
 
     if (firstChar in operators) {
-      operators[firstChar]++
+      operators[firstChar].push(name)
     } else if (exactVersion(semver)) {
-      operators['']++
+      operators[''].push(name)
     }
 
     return operators

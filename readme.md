@@ -1,6 +1,6 @@
 # semver-operators [![Build Status](https://travis-ci.org/bendrucker/semver-operators.svg?branch=master)](https://travis-ci.org/bendrucker/semver-operators)
 
-> Get the semver operators for a package
+> Get the semver operators for a package with the corresponding dependencies
 
 
 ## Install
@@ -16,7 +16,7 @@ $ npm install --save semver-operators
 var semverOperators = require('semver-operators')
 
 semverOperators('exposify', {version: '0.4.3'}, callback);
-//=> callback(null, {'~': 6, '^': 0, '': 0})
+//=> callback(null, '~': ['globo', 'has-require', ...], '^': [], '': []})
 ```
 
 ## API
@@ -55,7 +55,7 @@ The type of dependencies (dev or peer), defaulting to regular.
 Type: `function`  
 Arguments: `err, operators`
 
-A callback to be called with an operators object with keys representing operators (`''` means an exact version) and values representing the number of occurrences.
+A callback to be called with an operators object with keys representing operators (`''` means an exact version) and values representing the dependencies that have that operator.
 
 ## License
 
