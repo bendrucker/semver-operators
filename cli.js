@@ -10,7 +10,7 @@ var chalk = require('chalk')
 var cli = meow({
   help: [
     'Usage',
-    '  semver-operators <package> --version=<version> --type=<type>',
+    '  semver-operators <package> --version=<version> --type=<type>'
   ]
 })
 
