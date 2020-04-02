@@ -27,7 +27,7 @@
   ],
   "dependencies": {
     "ap": "~0.2.0",
-    "chalk": "~2.4.1",
+    "chalk": "~4.0.0",
     "cli-fail": "~1.0.0",
     "exact-version": "~1.0.0",
     "get-package": "~1.0.0",
