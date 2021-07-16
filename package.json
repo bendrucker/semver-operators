@@ -31,7 +31,7 @@
     "cli-fail": "~1.0.0",
     "exact-version": "~1.0.0",
     "get-package": "~1.0.0",
-    "meow": "~9.0.0",
+    "meow": "~10.1.0",
     "semver-range-types": "~1.0.0",
     "xtend": "~4.0.0"
   },
